@@ -12,7 +12,7 @@ public class Audio extends Medium {
 
 	@Override
 	public void druckeDaten() {
-System.out.println(this);
+		System.out.println(this);
 	}
 
 	@Override
@@ -28,7 +28,6 @@ System.out.println(this);
 		return "ID= " + this.getId() + " " + "\"" + this.getTitel() + "\" von " + this.getInterpret() + " aus "
 				+ this.getJahr() + " Spieldauer: " + this.getDauer() + " sek.";
 	}
-	
 
 	// Getter und Setter
 	public String getInterpret() {

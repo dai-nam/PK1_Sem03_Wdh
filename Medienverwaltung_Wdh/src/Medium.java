@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public abstract class Medium {
+public abstract class Medium implements Comparable{
 
 	private static int numMedium;
 	private int id;
@@ -42,6 +42,10 @@ public abstract class Medium {
 		}
 	}
 
+	@Override
+	public int compareTo(Object other) {
+			return this.jahr-((Medium)other).jahr;
+	}
 
 	@Override
 	public abstract String toString();

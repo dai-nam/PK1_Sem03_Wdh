@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Medienverwaltung {
 	}
 
 	public void zeigeMedien() {
+		Collections.sort(medien);
 		for (Medium m : medien)
 			m.druckeDaten();
 	}
@@ -37,7 +39,6 @@ public class Medienverwaltung {
 		return medium;
 	}
 
-
 	public int berechneErscheinungsjahr() {
 		if (medien.size() <= 0)
 			return 0;
@@ -49,6 +50,10 @@ public class Medienverwaltung {
 
 		return summe / medien.size();
 
+	}
+
+	public List<Medium> getMedien() {
+		return this.medien;
 	}
 }
 //	public int berechneErscheinungsjahr() {

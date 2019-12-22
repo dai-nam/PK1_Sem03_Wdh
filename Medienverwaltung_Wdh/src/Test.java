@@ -19,7 +19,8 @@ public class Test {
 //		System.out.println(mv.berechneErscheinungsjahr());
 //		System.out.println(mv.sucheNeuesMedium());
 
-		Medienverwaltung mv = new Medienverwaltung();
+		Medienliste medienliste = new Medienliste();
+		Medienverwaltung mv = new Medienverwaltung(medienliste);
 		Menu menu = new Menu(mv);
 		menu.show();
 		int auswahl = -1;

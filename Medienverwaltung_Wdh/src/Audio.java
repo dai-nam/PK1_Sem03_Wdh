@@ -1,6 +1,9 @@
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 public class Audio extends Medium {
 
+	private static final long serialVersionUID = -3700656455650414332L;
 	private String interpret;
 	private int dauer;
 
@@ -14,6 +17,8 @@ public class Audio extends Medium {
 	public void druckeDaten() {
 		System.out.println(this);
 	}
+
+
 
 	@Override
 	public boolean equals(Object other) {

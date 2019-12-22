@@ -1,3 +1,11 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -18,7 +26,10 @@ public class Menu {
 		System.out.println("3. Zeige alle Medien");
 		System.out.println("4. Zeige neues Medium");
 		System.out.println("5. Berechne durchschnittliches Erscheinungsjahr");
-		System.out.println("6. Beenden\n");
+		System.out.println("6. Medienliste in Datei schreiben");
+		System.out.println("7. Laden");
+		System.out.println("8. Speichern");
+		System.out.println("9. Beenden\n");
 		System.out.println("Bitte Menuepunkt waehlen:");
 		System.out.println("-------------------------------------");
 	}
@@ -29,7 +40,7 @@ public class Menu {
 		int auswahl = -1;
 		while (!gueltigeEingabe) {
 			auswahl = scn.nextInt();
-			if (auswahl > 0 && auswahl < 7)
+			if (auswahl > 0 && auswahl < 10)
 				gueltigeEingabe = true;
 			else
 				System.out.println("Ungültige Eingabe!");
@@ -48,6 +59,7 @@ public class Menu {
 			bildAufnehmen();
 			break;
 		case 3:
+			Collections.sort(mv.getMedien());
 			mv.zeigeMedien();
 			break;
 		case 4:
@@ -57,6 +69,28 @@ public class Menu {
 			System.out.println(mv.berechneErscheinungsjahr());
 			break;
 		case 6:
+			Collections.sort(mv.getMedien());
+			boolean validName = false;
+			while (!validName) {
+				try {
+					String name = dateiPfadEingabe();
+					medienListeInDatei(name);
+					validName = true;
+				} catch (EmptyFilenameException e) {
+					if (e.getSelected() == 0)
+						continue;
+					else if (e.getSelected() == 2)
+						break;
+				}
+			}
+			break;
+		case 7:
+			serialisiertLaden();
+			break;
+		case 8:
+			serialisiertSpeichern();
+			break;
+		case 9:
 			System.out.println("Programm beendet");
 			scn.close();
 			System.exit(0);
@@ -67,11 +101,64 @@ public class Menu {
 	}
 
 	private void audioAufnehmen() {
-		String titel = JOptionPane.showInputDialog(null, "Titel");
-		int jahr = Integer.parseInt(JOptionPane.showInputDialog(null, "Erscheinungsjahr"));
-		String interpret = JOptionPane.showInputDialog(null, "Interpret");
-		int dauer = Integer.parseInt(JOptionPane.showInputDialog(null, "Dauer"));
+		String titel = null;
+		String interpret = null;
+		Integer jahr = null;
+		Integer dauer = null;
+
+		boolean titelGesetzt = false;
+		while (!titelGesetzt) {
+			titel = JOptionPane.showInputDialog(null, "Titel");
+			if (titel == null)
+				return;
+			if (titel.equals(""))
+				JOptionPane.showMessageDialog(null, "Bitte gültigen Titel eingeben.");
+			else
+				titelGesetzt = true;
+		}
+
+		boolean jahrGesetzt = false;
+		while (!jahrGesetzt) {
+			String x = JOptionPane.showInputDialog(null, "Erscheinungsjahr");
+			if (x == null)
+				return;
+			else {
+				try {
+					jahr = Integer.parseInt(x);
+					jahrGesetzt = true;
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Bitte gültiges Jahr eingeben.");
+				}
+			}
+		}
+
+		boolean interpretGesetzt = false;
+		while (!interpretGesetzt) {
+			interpret = JOptionPane.showInputDialog(null, "Interpret");
+			if (interpret == null)
+				return;
+			if (interpret.equals(""))
+				JOptionPane.showMessageDialog(null, "Bitte gültigen Interpreten eingeben.");
+			else
+				interpretGesetzt = true;
+		}
+
+		boolean dauerGesetzt = false;
+		while (!dauerGesetzt) {
+			String y = (JOptionPane.showInputDialog(null, "Dauer"));
+			if (y == null)
+				return;
+			else {
+				try {
+					dauer = Integer.parseInt(y);
+					dauerGesetzt = true;
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Bitte gültige Dauer eingeben.");
+				}
+			}
+		}
 		mv.getMedien().add(new Audio(titel, jahr, interpret, dauer));
+
 	}
 
 	private void bildAufnehmen() {
@@ -79,5 +166,55 @@ public class Menu {
 		int jahr = Integer.parseInt(JOptionPane.showInputDialog(null, "Erscheinungsjahr"));
 		String ort = JOptionPane.showInputDialog(null, "Ort");
 		mv.getMedien().add(new Bild(titel, jahr, ort));
+	}
+
+	private String dateiPfadEingabe() throws EmptyFilenameException {
+		String pfad = "C:\\Users\\Michael\\Desktop";
+		String name = "";
+		name = JOptionPane.showInputDialog(null, "Dateiname");
+		if (name == null)
+			return null;
+		else if (name.equals(""))
+			throw new EmptyFilenameException();
+
+		return pfad + "\\" + name + ".txt";
+	}
+
+	private void medienListeInDatei(String name) {
+		if (name == null)
+			return;
+
+		File file = new File(name);
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			for (Medium m : mv.getMedien())
+				m.druckeDaten(fos);
+		} catch (FileNotFoundException e) {
+		}
+
+	}
+
+	private void serialisiertLaden() {
+		File file = new File("C:\\Users\\Michael\\Desktop\\Medienliste.ser");
+		Medienliste ml = null;
+
+		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
+			ml = (Medienliste) ois.readObject();
+			mv.setMedienliste(ml);
+			Medium.setNumMedium(ml.getList().size());
+			System.out.println("Medienliste geladen");
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("Fehler bei Deserialisierung");
+		}
+	}
+
+	private void serialisiertSpeichern() {
+		File file = new File("C:\\Users\\Michael\\Desktop\\Medienliste.ser");
+		try (FileOutputStream fos = new FileOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+			oos.writeObject(mv.getMedienliste());
+			System.out.println("Medienliste gespeichert.");
+		} catch (IOException e) {
+			System.out.println("Fehler bei Serialisierung");
+		}
 	}
 }

@@ -6,9 +6,10 @@ import java.util.List;
 public class Medienverwaltung {
 
 	List<Medium> medien;
+	Medienliste ml;
 
-	public Medienverwaltung() {
-		this.medien = new LinkedList<>();
+	public Medienverwaltung(Medienliste ml) {
+		setMedienliste(ml);
 	}
 
 	public boolean aufnehmen(Medium m) {
@@ -22,9 +23,11 @@ public class Medienverwaltung {
 	}
 
 	public void zeigeMedien() {
-		Collections.sort(medien);
+		if (medien.size() == 0)
+			System.out.println("Medienliste leer!");
 		for (Medium m : medien)
-			m.druckeDaten();
+//			m.druckeDaten();
+			m.druckeDaten(System.out);
 	}
 
 	public Medium sucheNeuesMedium() {
@@ -55,15 +58,14 @@ public class Medienverwaltung {
 	public List<Medium> getMedien() {
 		return this.medien;
 	}
+
+	public Medienliste getMedienliste() {
+		return this.ml;
+	}
+
+	public void setMedienliste(Medienliste liste) {
+		this.ml = liste;
+		this.medien = ml.getList();
+	}
 }
-//	public int berechneErscheinungsjahr() {
-//		if (medien.size() <= 0)
-//			return 0;
-//		int summe = 0;
-//		for (Medium m : medien)
-//			summe += m.getJahr();
-//
-//		return summe / medien.size();
-//
-//	}
-//}
+

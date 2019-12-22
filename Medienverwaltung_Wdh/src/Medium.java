@@ -1,7 +1,12 @@
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Medium implements Comparable{
+public abstract class Medium implements Comparable, Serializable {
 
+	private static final long serialVersionUID = -6716628616023135458L;
 	private static int numMedium;
 	private int id;
 	private String titel;
@@ -22,6 +27,11 @@ public abstract class Medium implements Comparable{
 	}
 
 	public abstract void druckeDaten();
+
+	public void druckeDaten(OutputStream stream) {
+		PrintStream pw = new PrintStream(stream);
+		pw.print(toString() + "\n");
+	}
 
 	@Override
 	public boolean equals(Object other) {
@@ -44,7 +54,7 @@ public abstract class Medium implements Comparable{
 
 	@Override
 	public int compareTo(Object other) {
-			return this.jahr-((Medium)other).jahr;
+		return this.jahr - ((Medium) other).jahr;
 	}
 
 	@Override
@@ -78,6 +88,10 @@ public abstract class Medium implements Comparable{
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public static void setNumMedium(int i) {
+		numMedium = i;
 	}
 
 }

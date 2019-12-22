@@ -1,6 +1,7 @@
 
 public class Bild extends Medium {
 
+	private static final long serialVersionUID = 8376577082474588340L;
 	private String ort;
 
 	public Bild(String titel, int jahr, String ort) {

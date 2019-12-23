@@ -1,3 +1,4 @@
+package GUI;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,12 +11,19 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-public class Menu {
+import fachlogik.Audio;
+import fachlogik.Bild;
+import fachlogik.EmptyFilenameException;
+import fachlogik.Medienliste;
+import fachlogik.Medienverwaltung;
+import fachlogik.Medium;
+
+public class MenuView {
 
 	Medienverwaltung mv;
 	Scanner scn;
 
-	public Menu(Medienverwaltung mv) {
+	public MenuView(Medienverwaltung mv) {
 		this.mv = mv;
 	}
 

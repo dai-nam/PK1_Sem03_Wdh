@@ -1,3 +1,4 @@
+package fachlogik;
 import javax.swing.JOptionPane;
 
 public class EmptyFilenameException extends Exception {

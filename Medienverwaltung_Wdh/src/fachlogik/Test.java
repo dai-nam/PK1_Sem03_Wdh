@@ -1,3 +1,5 @@
+package fachlogik;
+import GUI.MenuView;
 
 public class Test {
 
@@ -21,7 +23,7 @@ public class Test {
 
 		Medienliste medienliste = new Medienliste();
 		Medienverwaltung mv = new Medienverwaltung(medienliste);
-		Menu menu = new Menu(mv);
+		MenuView menu = new MenuView(mv);
 		menu.show();
 		int auswahl = -1;
 		while (true) {

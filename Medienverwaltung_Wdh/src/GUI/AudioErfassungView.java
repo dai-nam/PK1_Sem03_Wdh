@@ -1,4 +1,6 @@
+package GUI;
 
+import fachlogik.Audio;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,12 +14,12 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class BildErfassungView extends Stage {
+public class AudioErfassungView extends Stage {
 
-	Bild bild;
+	Audio audio;
 
-	public BildErfassungView(Stage primaryStage, Bild bild) {
-		this.bild = bild;
+	public AudioErfassungView(Stage primaryStage, Audio audio) {
+		this.audio = audio;
 		this.initOwner(primaryStage);
 		this.initModality(Modality.WINDOW_MODAL);
 	}
@@ -36,27 +38,40 @@ public class BildErfassungView extends Stage {
 		GridPane.setHgrow(tf1, Priority.ALWAYS);
 		gp.addRow(0, l1, tf1);
 
-		Label l2 = new Label("Ort: ");
+		Label l2 = new Label("Interpret: ");
 		GridPane.setHgrow(l2, Priority.NEVER);
 		GridPane.setHalignment(l2, HPos.RIGHT);
 		TextField tf2 = new TextField();
 		GridPane.setHgrow(tf2, Priority.ALWAYS);
 		gp.addRow(1, l2, tf2);
 
-		Label l3 = new Label("Aufnahmejahr: ");
+		Label l3 = new Label("Jahr: ");
 		GridPane.setHgrow(l3, Priority.NEVER);
 		GridPane.setHalignment(l3, HPos.RIGHT);
-
 		TextField tf3 = new TextField();
 		GridPane.setHgrow(tf3, Priority.ALWAYS);
 		gp.addRow(2, l3, tf3);
+
+		Label l4 = new Label("Dauer: ");
+		GridPane.setHgrow(l4, Priority.NEVER);
+		GridPane.setHalignment(l4, HPos.RIGHT);
+		TextField tf4 = new TextField();
+		GridPane.setHgrow(tf4, Priority.ALWAYS);
+		gp.addRow(3, l4, tf4);
 
 		Button b1 = new Button("Neu");
 		Button b2 = new Button("Abbrechen");
 		HBox hb1 = new HBox(b1, b2);
 		hb1.setPadding(new Insets(20, 0, 10, 60));
 		hb1.setSpacing(20);
-		gp.add(hb1, 1, 3);
+		gp.add(hb1, 1, 4);
+
+		if (audio != null) {
+			tf1.setText(audio.getTitel());
+			tf2.setText(audio.getInterpret());
+			tf3.setText(Integer.toString(audio.getJahr()));
+			tf4.setText(Integer.toString(audio.getDauer()));
+		}
 
 		Scene scene = new Scene(gp);
 		this.setScene(scene);
@@ -66,6 +81,14 @@ public class BildErfassungView extends Stage {
 		this.setMinHeight(this.getHeight());
 		this.setMinHeight(this.getHeight());
 		this.setMaxHeight(this.getHeight());
+
+		// Event Handling
+		b1.setOnAction(e -> {
+			audio.setTitel(tf1.getText());
+			audio.setInterpret(tf2.getText());
+			audio.setJahr(Integer.parseInt(tf3.getText()));
+			audio.setDauer(Integer.parseInt(tf4.getText()));
+		});
 
 	}
 

@@ -1,3 +1,4 @@
+package fachlogik;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -66,6 +67,10 @@ public class Medienverwaltung {
 	public void setMedienliste(Medienliste liste) {
 		this.ml = liste;
 		this.medien = ml.getList();
+	}
+	
+	public Iterator<Medium> iterator(){
+		return ml.getList().iterator();
 	}
 }
 

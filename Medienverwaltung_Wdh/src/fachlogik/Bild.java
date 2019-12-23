@@ -1,3 +1,4 @@
+package fachlogik;
 
 public class Bild extends Medium {
 

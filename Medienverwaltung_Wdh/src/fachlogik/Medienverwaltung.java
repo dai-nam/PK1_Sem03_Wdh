@@ -1,16 +1,37 @@
 package fachlogik;
-import java.util.Collections;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import Datenhaltung.IDao;
+import Datenhaltung.PersistenzException;
+
 public class Medienverwaltung {
 
 	List<Medium> medien;
-	Medienliste ml;
+	IDao dao;
 
-	public Medienverwaltung(Medienliste ml) {
-		setMedienliste(ml);
+	public Medienverwaltung(IDao dao) {
+		medien = new LinkedList<Medium>();
+		this.dao = dao;
+	}
+
+	public List<Medium> laden() {
+		try {
+			return medien = dao.laden();
+		} catch (PersistenzException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void speichern() {
+		try {
+			dao.speichern(medien);
+		} catch (PersistenzException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean aufnehmen(Medium m) {
@@ -27,7 +48,6 @@ public class Medienverwaltung {
 		if (medien.size() == 0)
 			System.out.println("Medienliste leer!");
 		for (Medium m : medien)
-//			m.druckeDaten();
 			m.druckeDaten(System.out);
 	}
 
@@ -60,17 +80,12 @@ public class Medienverwaltung {
 		return this.medien;
 	}
 
-	public Medienliste getMedienliste() {
-		return this.ml;
+	public void setMedien(List<Medium> medien) {
+		this.medien = medien;
 	}
 
-	public void setMedienliste(Medienliste liste) {
-		this.ml = liste;
-		this.medien = ml.getList();
+	public Iterator<Medium> iterator() {
+		return medien.iterator();
 	}
-	
-	public Iterator<Medium> iterator(){
-		return ml.getList().iterator();
-	}
+
 }
-

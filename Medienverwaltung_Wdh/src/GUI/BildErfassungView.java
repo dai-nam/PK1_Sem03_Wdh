@@ -24,6 +24,14 @@ public class BildErfassungView extends Stage {
 		this.initModality(Modality.WINDOW_MODAL);
 	}
 
+	public Bild getBild() {
+		return this.bild;
+	}
+
+	public boolean isValid() {
+		return (bild.getTitel() != null && bild.getOrt() != null);
+	}
+
 	public void showView() {
 		GridPane gp = new GridPane();
 		gp.setPadding(new Insets(10));
@@ -67,7 +75,6 @@ public class BildErfassungView extends Stage {
 
 		Scene scene = new Scene(gp);
 		this.setScene(scene);
-		this.show();
 
 		this.setMinWidth(this.getWidth());
 		this.setMinHeight(this.getHeight());
@@ -79,7 +86,13 @@ public class BildErfassungView extends Stage {
 			bild.setTitel(tf1.getText());
 			bild.setOrt(tf2.getText());
 			bild.setJahr(Integer.parseInt(tf3.getText()));
+			close();
 		});
+		
+		b2.setOnAction(e -> close());
+		
+		this.showAndWait();
+
 
 	}
 

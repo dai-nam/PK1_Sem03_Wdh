@@ -24,6 +24,14 @@ public class AudioErfassungView extends Stage {
 		this.initModality(Modality.WINDOW_MODAL);
 	}
 
+	public Audio getAudio() {
+		return this.audio;
+	}
+
+	public boolean isValid() {
+		return (audio.getInterpret() != null && audio.getTitel() != null);
+	}
+
 	public void showView() {
 		GridPane gp = new GridPane();
 		gp.setPadding(new Insets(10));
@@ -75,7 +83,6 @@ public class AudioErfassungView extends Stage {
 
 		Scene scene = new Scene(gp);
 		this.setScene(scene);
-		this.show();
 
 		this.setMinWidth(this.getWidth());
 		this.setMinHeight(this.getHeight());
@@ -88,8 +95,12 @@ public class AudioErfassungView extends Stage {
 			audio.setInterpret(tf2.getText());
 			audio.setJahr(Integer.parseInt(tf3.getText()));
 			audio.setDauer(Integer.parseInt(tf4.getText()));
+			close();
 		});
 
+		b2.setOnAction(e -> close());
+
+		this.showAndWait();
 	}
 
 }

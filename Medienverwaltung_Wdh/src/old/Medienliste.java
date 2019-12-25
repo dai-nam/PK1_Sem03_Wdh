@@ -1,7 +1,9 @@
-package fachlogik;
+package Datenhaltung;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+
+import fachlogik.Medium;
 
 public class Medienliste implements Serializable{
 
@@ -14,6 +16,10 @@ public class Medienliste implements Serializable{
 
 	public List<Medium> getList() {
 		return this.medien;
+	}
+	
+	public void setList(List <Medium> liste) {
+		this.medien = liste;
 	}
 
 }
